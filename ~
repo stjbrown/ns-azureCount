@@ -1,0 +1,14 @@
+#!/bin/bash
+CCount=0
+
+for row in $(az storage account list | jq -r ".[] | @base64"); do
+  _jq() {
+  		echo ${row} | base64 --decode | jq -r ${1}
+
+  }
+ if [ $(_jq '.kind') = "BlobStorage" ]; then
+     NewCount="$(az storage container list --account-name $(_jq '.name') | jq '. | length')"
+	echo $NewCount
+fi
+echo $CCount
+done
