@@ -1,8 +1,8 @@
 #Netskope Azure Count
 
-$VMCOUNT = az resource list | jq " .[] .type" | grep -c -w '"Microsoft.Compute/virtualMachines"'
+$VMCOUNT = (az resource list | jq " .[] .type" | Select-String -Pattern '"Microsoft.Compute/virtualMachines"').length
 
-$SQLCOUNT = az resource list | jq " .[] .type" | grep -c '"Microsoft.Sql/servers/databases"'
+$SQLCOUNT = (az resource list | jq " .[] .type" | Select-String -Pattern '"Microsoft.Sql/servers/databases"').length
 
 $COSMOSCOUNT = az cosmosdb list | jq " . | length"
 
